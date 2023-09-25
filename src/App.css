@@ -5,6 +5,14 @@
   padding: 2rem;
 }
 
+*{
+  overflow: hidden;
+}
+
+::-webkit-scrollbar{
+  display: none;
+}
+
 .navbar {
   display: flex;
   align-items: center;
@@ -56,6 +64,8 @@
 
 .characters-list {
   width: 40%;
+  height: 100vh;
+  overflow: auto;
 }
 
 .box h2 {
