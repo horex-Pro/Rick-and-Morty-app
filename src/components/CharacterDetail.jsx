@@ -1,8 +1,33 @@
-import { character, episodes } from "../../data/data";
+import axios from "axios";
+// import { character, episodes } from "../../data/data";
 import { ArrowUpCircleIcon } from "@heroicons/react/24/outline";
+import { useEffect, useState } from "react";
+import ReactLoading from 'react-loading';
 
 
-function CharacterDetail() {
+function CharacterDetail ( { selectedId } )
+{
+    
+    const [ character, setCharacter ] = useState();
+    const [ loading, setLoading ] = useState(false);
+
+    
+    useEffect( () =>
+    {
+        async function getCharacter ()
+        {
+            setLoading( true );
+            axios.get( `https://rickandmortyapi.com/api/character/${ selectedId }` ).then( res => setCharacter( res.data ) );
+
+        }
+        if ( selectedId ) getCharacter();
+        setLoading(false)
+    }, [ selectedId ] );
+
+
+    if ( !character ) return <di>Please select a charcter</di>
+    if (loading) return <ReactLoading type="balls" color="#ffffff" width={100} height={100}/>
+
     return (
         <div style={ { flex: 1 } }>
             <div className="character-detail">
@@ -31,16 +56,21 @@ function CharacterDetail() {
                         <ArrowUpCircleIcon className="icon"/>
                     </button>
                 </div>
-                <ul>
+                <ul className="episodes-container">
                     {
-                        episodes.map(( item , index) => <li key={ item.id }>
-                            <div>
-                                {String(index + 1).padStart(2,'0')} &nbsp; { item.episode } : <strong>{ item.name}</strong>
-                            </div>
-                            <div className="badge badge--secondary">
-                                {item.air_date}
-                            </div>
-                        </li>)
+                        character.episode.map( ( item, index ) =>
+                        {
+                            return (
+                                <li key={ item.id }>
+                                    <div>
+                                        { String( index + 1 ).padStart( 2, '0' ) } &nbsp; { item.episode } : <strong>{ item.name }</strong>
+                                    </div>
+                                    <div className="badge badge--secondary">
+                                        { item.air_date }
+                                    </div>
+                                </li>
+                            );
+                        })
                     }
                 </ul>
             </div>

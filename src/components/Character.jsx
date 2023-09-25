@@ -1,9 +1,9 @@
 import { EyeIcon } from "@heroicons/react/24/outline";
 
-function Character ({item})
+function Character ({item , onSelect})
 {
     return (
-        <div className="list__item">
+        <div className="list__item" onClick={()=>onSelect(item.id)}>
             <img src={ item.image } alt={ item.name } />
             <CharcterName item={ item } />
             <CharacterInfo item={item} />

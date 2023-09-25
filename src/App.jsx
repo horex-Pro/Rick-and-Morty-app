@@ -14,36 +14,43 @@ function App ()
 {
   
   const [ characters, setCharacters ] = useState( [] );
-  const [ query, setQuery ] = useState('');
+  const [ query, setQuery ] = useState( '' );
+  
+  const [ selectedId, setSelectedId ] = useState();
 
 
-  console.log(query)
   useEffect( () =>
   {
     async function getData ()
     {
       try
       {
-        const { data } = await axios.get( `https://rickandmortyapi.com/api/character/?name=${query}` );
+        const { data } = await axios.get( `https://rickandmortyapi.com/api/character/?name=${ query }` );
 
-        setCharacters(data.results)
+        setCharacters( data.results );
         
       } catch ( error )
       {
-        setCharacters([])
+        setCharacters( [] );
         toast.error( error.response.data.error );
       }
     }
     getData();
-  }, [query] )
+  }, [ query ] )
+
+
+  const selectHnadler = (id) =>
+  {
+    setSelectedId(id)
+  }
 
   return (
     <div className="app">
       <Toaster/>
       <Navbar numOfResult={characters.length} query={query} setQuery={setQuery} />
       <Main characters={ characters }>
-        <CharacterList characters={ characters} />
-        <CharacterDetail/>
+        <CharacterList characters={ characters} onSelect={selectHnadler} />
+        <CharacterDetail selectedId={ selectedId} />
       </Main>
     </div>
   )
