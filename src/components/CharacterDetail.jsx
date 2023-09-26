@@ -1,18 +1,16 @@
 import axios from "axios";
-// import { character, episodes } from "../../data/data";
 import { ArrowUpCircleIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 import ReactLoading from 'react-loading';
 
 
-function CharacterDetail ( { selectedId } )
+function CharacterDetail ( { selectedId , addToFav ,isItExist } )
 {
     
     const [ character, setCharacter ] = useState();
     const [ loading, setLoading ] = useState( false );
     const [ episodes, setEpisodes ] = useState([]);
 
-    
     useEffect( () =>
     {
         async function getCharacter ()
@@ -39,7 +37,6 @@ function CharacterDetail ( { selectedId } )
                 setLoading( false );
             }
         }
-
         getCharacter();
     }, [ selectedId ] );
 
@@ -55,16 +52,17 @@ function CharacterDetail ( { selectedId } )
                     <div className="info">
                         <span className={ `status ${ character.status === 'Dead' ? 'red' : '' }` }></span>
                         <span>&nbsp;{ character.status }</span>
-                        <span>&nbsp;{ character.species}</span>
+                        <span>&nbsp;{ character.species }</span>
                     </div>
                     <div className="location">
                         <p>Last known location:</p>
-                        <p>{ character.location.name}</p>
+                        <p>{ character.location.name }</p>
                     </div>
                     <div className="actions">
-                        <button className="btn btn--primary">
+                        { isItExist ? <p>this character already is in your favourites</p> :
+                            <button className="btn btn--primary" onClick={ () => addToFav( character.id ) }>
                             add to favourite
-                        </button>
+                        </button>}
                     </div>
                 </div>
             </div>
@@ -72,7 +70,7 @@ function CharacterDetail ( { selectedId } )
                 <div className="title">
                     <h2>List of Episodes</h2>
                     <button>
-                        <ArrowUpCircleIcon className="icon"/>
+                        <ArrowUpCircleIcon className="icon" />
                     </button>
                 </div>
                 <ul className="episodes-container">
@@ -89,7 +87,7 @@ function CharacterDetail ( { selectedId } )
                                     </div>
                                 </li>
                             );
-                        })
+                        } )
                     }
                 </ul>
             </div>

@@ -15,8 +15,8 @@ function App ()
   
   const [ characters, setCharacters ] = useState( [] );
   const [ query, setQuery ] = useState( '' );
-  
   const [ selectedId, setSelectedId ] = useState();
+  const [ favourates, setFavourates ] = useState( [] );
 
 
   useEffect( () =>
@@ -44,13 +44,21 @@ function App ()
     setSelectedId(id)
   }
 
+  const addFavourateHandler = async ( id ) =>
+  {
+    setFavourates( prevFav => [ ...prevFav, characters[ id-1 ] ] );
+  };
+
+  const isItExist = favourates.map( item => item.id ).includes( selectedId );
+
+
   return (
     <div className="app">
       <Toaster/>
-      <Navbar numOfResult={characters.length} query={query} setQuery={setQuery} />
+      <Navbar numOfResult={ characters.length } query={ query } setQuery={ setQuery } numOfFav={ favourates.length} />
       <Main characters={ characters }>
         <CharacterList characters={ characters} onSelect={selectHnadler} />
-        <CharacterDetail selectedId={ selectedId} />
+        <CharacterDetail selectedId={ selectedId} addToFav={addFavourateHandler} isItExist={isItExist} />
       </Main>
     </div>
   )
