@@ -9,23 +9,42 @@ function CharacterDetail ( { selectedId } )
 {
     
     const [ character, setCharacter ] = useState();
-    const [ loading, setLoading ] = useState(false);
+    const [ loading, setLoading ] = useState( false );
+    const [ episodes, setEpisodes ] = useState([]);
 
     
     useEffect( () =>
     {
         async function getCharacter ()
         {
-            setLoading( true );
-            axios.get( `https://rickandmortyapi.com/api/character/${ selectedId }` ).then( res => setCharacter( res.data ) );
+            try
+            {
+                setLoading( true );
+                const response = await axios.get(
+                    `https://rickandmortyapi.com/api/character/${ selectedId }`
+                );
+                setCharacter( response.data );
 
+                const episodesId = response.data.episode.map( ( item ) => item.split( '/' ).pop() );
+
+                const episodesResponse = await axios.get(
+                    `https://rickandmortyapi.com/api/episode/${ episodesId.join( ',' ) }`
+                );
+                setEpisodes( episodesResponse.data );
+            } catch ( error )
+            {
+                console.error( error );
+            } finally
+            {
+                setLoading( false );
+            }
         }
-        if ( selectedId ) getCharacter();
-        setLoading(false)
+
+        getCharacter();
     }, [ selectedId ] );
 
 
-    if ( !character ) return <di>Please select a charcter</di>
+    if ( !character ) return <div>Please select a charcter</div>
     if (loading) return <ReactLoading type="balls" color="#ffffff" width={100} height={100}/>
 
     return (
@@ -58,7 +77,7 @@ function CharacterDetail ( { selectedId } )
                 </div>
                 <ul className="episodes-container">
                     {
-                        character.episode.map( ( item, index ) =>
+                        episodes.map( ( item, index ) =>
                         {
                             return (
                                 <li key={ item.id }>
