@@ -42,7 +42,7 @@ function CharacterDetail ( { selectedId , addToFav ,isItExist } )
 
 
     if ( !character ) return <div>Please select a charcter</div>
-    if (loading) return <ReactLoading type="balls" color="#ffffff" width={100} height={100}/>
+    if (loading) return <ReactLoading type="balls" color="#fff" width={100} height={100}/>
 
     return (
         <div style={ { flex: 1 } }>
