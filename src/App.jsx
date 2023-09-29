@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
+import Modal from './components/Modal';
 
 
 function App ()
@@ -61,16 +62,20 @@ function App ()
     setFavourates( prevFav => [ ...prevFav, characters[ id-1 ] ] );
   };
 
-  const isItExist = favourates.map( item => item.id ).includes( selectedId );
+  const deleteFavHandler = ( id ) =>
+  {
+    setFavourates((prevFav)=> prevFav.filter(item => item.id !== id))
+  }
 
+  const isItExist = favourates.map( item => item.id ).includes( selectedId );
 
   return (
     <div className="app">
-      <Toaster/>
-      <Navbar numOfResult={ characters.length } query={ query } setQuery={ setQuery } numOfFav={ favourates.length} />
+      <Toaster />
+      <Navbar numOfResult={ characters.length } query={ query } setQuery={ setQuery } favourates={favourates} onDelete={deleteFavHandler}  />
       <Main characters={ characters }>
-        <CharacterList characters={ characters} onSelect={selectHnadler} />
-        <CharacterDetail selectedId={ selectedId} addToFav={addFavourateHandler} isItExist={isItExist} />
+        <CharacterList characters={ characters} onSelect={selectHnadler}/>
+        <CharacterDetail selectedId={ selectedId} addToFav={addFavourateHandler} isItExist={isItExist}  />
       </Main>
     </div>
   )
