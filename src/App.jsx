@@ -21,21 +21,33 @@ function App ()
 
   useEffect( () =>
   {
+
+    const controller = new AbortController;
+    const signal = controller.signal;
     async function getData ()
     {
       try
       {
-        const { data } = await axios.get( `https://rickandmortyapi.com/api/character/?name=${ query }` );
+        const { data } = await axios.get( `https://rickandmortyapi.com/api/character/?name=${ query }` , {signal} );
 
         setCharacters( data.results );
         
       } catch ( error )
       {
-        setCharacters( [] );
-        toast.error( error.response.data.error );
+
+        if ( !axios.isCancel() )
+        {
+          setCharacters( [] );
+          toast.error( error.response.data.error );
+        }
       }
     }
     getData();
+
+    return () =>
+    {
+      controller.abort();
+    }
   }, [ query ] )
 
 

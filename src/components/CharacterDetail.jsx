@@ -31,42 +31,34 @@ function CharacterDetail ( { selectedId , addToFav ,isItExist } )
                 setEpisodes( episodesResponse.data );
             } catch ( error )
             {
-                console.error( error );
             } finally
             {
                 setLoading( false );
             }
         }
         getCharacter();
+
+        return () => { };
     }, [ selectedId ] );
 
 
-    if ( !character ) return <div>Please select a charcter</div>
+    if ( !character ) return <div>Please select a character</div>
     if (loading) return <ReactLoading type="balls" color="#fff" width={100} height={100}/>
 
     return (
         <div style={ { flex: 1 } }>
-            <div className="character-detail">
-                <img src={ character.image } alt={ character.name } className="character-detail__img" />
-                <div className="character-detail__info">
-                    <div className="info">
-                        <span className={ `status ${ character.status === 'Dead' ? 'red' : '' }` }></span>
-                        <span>&nbsp;{ character.status }</span>
-                        <span>&nbsp;{ character.species }</span>
-                    </div>
-                    <div className="location">
-                        <p>Last known location:</p>
-                        <p>{ character.location.name }</p>
-                    </div>
-                    <div className="actions">
-                        { isItExist ? <p>this character already is in your favourites</p> :
-                            <button className="btn btn--primary" onClick={ () => addToFav( character.id ) }>
-                            add to favourite
-                        </button>}
-                    </div>
-                </div>
-            </div>
-            <div className="character-episodes">
+            <CharacterSubDetail character={ character } isItExist={isItExist} addToFav={addToFav} />
+            <Episodes episodes={ episodes } />
+        </div>
+    );
+}
+
+export default CharacterDetail;
+
+
+function Episodes ({episodes}) {
+    return (
+         <div className="character-episodes">
                 <div className="title">
                     <h2>List of Episodes</h2>
                     <button>
@@ -91,10 +83,32 @@ function CharacterDetail ( { selectedId , addToFav ,isItExist } )
                     }
                 </ul>
             </div>
-        </div>
     )
 }
 
-export default CharacterDetail;
 
-
+function CharacterSubDetail ( { character , isItExist } )
+{
+    return (
+        <div className="character-detail">
+                <img src={ character.image } alt={ character.name } className="character-detail__img" />
+                <div className="character-detail__info">
+                    <div className="info">
+                        <span className={ `status ${ character.status === 'Dead' ? 'red' : '' }` }></span>
+                        <span>&nbsp;{ character.status }</span>
+                        <span>&nbsp;{ character.species }</span>
+                    </div>
+                    <div className="location">
+                        <p>Last known location:</p>
+                        <p>{ character.location.name }</p>
+                    </div>
+                    <div className="actions">
+                        { isItExist ? <p>this character already is in your favourites</p> :
+                            <button className="btn btn--primary" onClick={ () => addToFav( character.id ) }>
+                            add to favourite
+                        </button>}
+                    </div>
+                </div>
+            </div>
+    )
+}
