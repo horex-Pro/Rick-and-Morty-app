@@ -14,10 +14,11 @@ import Modal from './components/Modal';
 function App ()
 {
   
-  const [ characters, setCharacters ] = useState( [] );
+  const [ characters, setCharacters ] = useState([])
   const [ query, setQuery ] = useState( '' );
   const [ selectedId, setSelectedId ] = useState();
-  const [ favourates, setFavourates ] = useState( [] );
+  const [ favourates, setFavourates ] = useState(()=> JSON.parse(localStorage.getItem('Favourites')) || []);
+
 
 
   useEffect( () =>
@@ -51,6 +52,10 @@ function App ()
     }
   }, [ query ] )
 
+  useEffect( () =>
+  {
+    localStorage.setItem('Favourites',JSON.stringify(favourates))
+  },[favourates])
 
   const selectHnadler = (id) =>
   {
