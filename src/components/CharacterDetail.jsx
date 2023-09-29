@@ -56,18 +56,33 @@ function CharacterDetail ( { selectedId , addToFav ,isItExist } )
 export default CharacterDetail;
 
 
-function Episodes ({episodes}) {
+function Episodes ( { episodes } )
+{
+    
+    const [ sortBy, setSortBy ] = useState( true );
+    
+    let sortedEpisodes;
+
+    if ( sortBy )
+    {
+        sortedEpisodes = [ ...episodes ].sort( ( a, b ) => new Date( a.created ) - new Date( b.created ) );
+    }
+    else
+    {
+        sortedEpisodes = [ ...episodes ].sort( ( a, b ) => new Date( b.created ) - new Date( a.created ) );
+    }
+
     return (
          <div className="character-episodes">
                 <div className="title">
                     <h2>List of Episodes</h2>
-                    <button>
-                        <ArrowUpCircleIcon className="icon" />
+                    <button onClick={()=> setSortBy((is)=> !is)}>
+                        <ArrowUpCircleIcon className="icon" style={{rotate:sortBy? '0deg' : '180deg'}} />
                     </button>
                 </div>
                 <ul className="episodes-container">
                     {
-                        episodes.map( ( item, index ) =>
+                        sortedEpisodes.map( ( item, index ) =>
                         {
                             return (
                                 <li key={ item.id }>
@@ -87,8 +102,10 @@ function Episodes ({episodes}) {
 }
 
 
-function CharacterSubDetail ( { character , isItExist } )
+function CharacterSubDetail ( { character , isItExist , addToFav } )
 {
+
+
     return (
         <div className="character-detail">
                 <img src={ character.image } alt={ character.name } className="character-detail__img" />
