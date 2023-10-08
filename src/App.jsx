@@ -4,58 +4,21 @@ import Navbar from './components/Navbar'
 import "./App.css";
 import CharacterList from './components/CharacterList';
 import CharacterDetail from './components/CharacterDetail';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import toast, { Toaster } from 'react-hot-toast';
-import axios from 'axios';
-import Modal from './components/Modal';
+import { Toaster } from 'react-hot-toast';
+import useCharacters from './hooks/useCharacters';
+import useFavourites from './hooks/useFavourites';
+
 
 
 function App ()
 {
   
-  const [ characters, setCharacters ] = useState([])
   const [ query, setQuery ] = useState( '' );
+  const { characters } = useCharacters( query )
+  const [ favourates, setFavourates ] = useFavourites( 'Favourites' , [] );
   const [ selectedId, setSelectedId ] = useState();
-  const [ favourates, setFavourates ] = useState(()=> JSON.parse(localStorage.getItem('Favourites')) || []);
-
-
-
-  useEffect( () =>
-  {
-
-    const controller = new AbortController;
-    const signal = controller.signal;
-    async function getData ()
-    {
-      try
-      {
-        const { data } = await axios.get( `https://rickandmortyapi.com/api/character/?name=${ query }` , {signal} );
-
-        setCharacters( data.results );
-        
-      } catch ( error )
-      {
-
-        if ( !axios.isCancel() )
-        {
-          setCharacters( [] );
-          toast.error( error.response.data.error );
-        }
-      }
-    }
-    getData();
-
-    return () =>
-    {
-      controller.abort();
-    }
-  }, [ query ] )
-
-  useEffect( () =>
-  {
-    localStorage.setItem('Favourites',JSON.stringify(favourates))
-  },[favourates])
 
   const selectHnadler = (id) =>
   {
