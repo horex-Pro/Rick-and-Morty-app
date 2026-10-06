@@ -173,6 +173,15 @@
   overflow: auto;
 }
 
+/* stands in for .characters-list, so it keeps the same width to
+   stop the detail pane jumping while a search is in flight */
+.loader {
+  width: 40%;
+  padding: 2rem 0;
+  color: var(--slate-300);
+  text-align: center;
+}
+
 .box h2 {
   color: var(--slate-400);
   font-size: 1.2rem;

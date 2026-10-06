@@ -8,10 +8,12 @@ import { useState } from "react";
 import { Toaster } from "react-hot-toast";
 import useCharacters from "./hooks/useCharacters";
 import useFavourites from "./hooks/useFavourites";
+import useDebounce from "./hooks/useDebounce";
 
 function App() {
   const [query, setQuery] = useState("");
-  const { characters } = useCharacters(query);
+  const debouncedQuery = useDebounce(query, 500);
+  const { characters, isLoading } = useCharacters(debouncedQuery);
   const [favourates, setFavourates] = useFavourites("Favourites", []);
   const [selectedId, setSelectedId] = useState();
 
@@ -29,6 +31,9 @@ function App() {
 
   const isItExist = favourates.map((item) => item.id).includes(selectedId);
 
+  // covers both phases: waiting out the debounce, and the request itself
+  const isSearching = query !== debouncedQuery || isLoading;
+
   return (
     <div className="app">
       <Toaster />
@@ -40,7 +45,11 @@ function App() {
         onDelete={deleteFavHandler}
       />
       <Main characters={characters}>
-        <CharacterList characters={characters} onSelect={selectHnadler} />
+        <CharacterList
+          characters={characters}
+          isLoading={isSearching}
+          onSelect={selectHnadler}
+        />
         <CharacterDetail
           selectedId={selectedId}
           addToFav={addFavourateHandler}
