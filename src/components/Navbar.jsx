@@ -2,6 +2,7 @@ import { HeartIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import Modal from "./Modal";
 import Character from "./Character";
+import ThemeToggle from "./ThemeToggle";
 
 function Navbar({ numOfResult, query, setQuery, favourates, onDelete }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,6 +27,7 @@ function Navbar({ numOfResult, query, setQuery, favourates, onDelete }) {
         <HeartIcon className="icon" />
         <span className="badge">{favourates.length}</span>
       </button>
+      <ThemeToggle />
     </nav>
   );
 }

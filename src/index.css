@@ -1,5 +1,6 @@
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  color-scheme: dark;
   --slate-900: #0f172a;
   --slate-800: #1e293b;
   --slate-700: #334155;
@@ -15,10 +16,25 @@
   --green-600: #22c55e;
 }
 
+:root[data-theme="light"] {
+  color-scheme: light;
+  --slate-900: #f8fafc;
+  --slate-800: #f1f5f9;
+  --slate-700: #e2e8f0;
+  --slate-600: #cbd5e1;
+  --slate-500: #94a3b8;
+  --slate-400: rgb(100, 116, 139);
+  --slate-300: #475569;
+  --slate-200: #334155;
+  --slate-100: #1e293b;
+  --slate-50: #0f172a;
+}
+
 body {
   width: 100vw;
   min-height: 100vh;
   background-color: var(--slate-900);
+  transition: background-color 0.4s ease;
 }
 button {
   background-color: transparent;
@@ -32,6 +48,8 @@ button {
   list-style: none;
   border: none;
   outline: none;
+  transition: background-color 0.3s ease, color 0.3s ease,
+    border-color 0.3s ease, box-shadow 0.3s ease;
 }
 .text-field {
   padding: 0.7rem 1rem;

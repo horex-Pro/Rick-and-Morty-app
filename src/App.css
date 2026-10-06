@@ -5,11 +5,11 @@
   padding: 2rem;
 }
 
-*{
+* {
   overflow: hidden;
 }
 
-::-webkit-scrollbar{
+::-webkit-scrollbar {
   display: none;
 }
 
@@ -53,6 +53,111 @@
   align-items: center;
   justify-content: center;
   padding: 1px 4px;
+}
+
+.theme-toggle {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 3.6rem;
+  height: 2rem;
+  padding: 0 0.4rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--slate-900), var(--slate-600));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  transition: background 0.4s ease;
+}
+
+.theme-toggle.light {
+  background: linear-gradient(135deg, #7dd3fc, #fde68a);
+}
+
+.theme-toggle__icon {
+  position: relative;
+  z-index: 1;
+  width: 1.1rem;
+  height: 1.1rem;
+  transition:
+    opacity 0.3s ease,
+    color 0.3s ease;
+}
+
+.theme-toggle__icon.sun {
+  color: #fde68a;
+  opacity: 0.5;
+}
+
+.theme-toggle__icon.moon {
+  color: var(--slate-300);
+  opacity: 0.9;
+}
+
+.theme-toggle.light .theme-toggle__icon.sun {
+  opacity: 1;
+}
+
+.theme-toggle.light .theme-toggle__icon.moon {
+  opacity: 0.35;
+}
+
+.theme-toggle__thumb {
+  position: absolute;
+  z-index: 2;
+  top: 0.15rem;
+  left: 0.15rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background-color: var(--slate-900);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateX(0);
+  transition:
+    transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 0.4s ease;
+}
+
+.theme-toggle.light .theme-toggle__thumb {
+  transform: translateX(1.6rem);
+  background-color: #fff;
+}
+
+.thumb-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1rem;
+  height: 1rem;
+  margin: -0.5rem 0 0 -0.5rem;
+  transition:
+    opacity 0.35s ease,
+    transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.thumb-icon--sun {
+  color: #f59e0b;
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.4);
+}
+
+.thumb-icon--moon {
+  color: #cbd5e1;
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+.theme-toggle.light .thumb-icon--sun {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+.theme-toggle.light .thumb-icon--moon {
+  opacity: 0;
+  transform: rotate(90deg) scale(0.4);
 }
 
 .main {
@@ -223,7 +328,7 @@
   padding: 0.5rem 0;
   /* cursor: pointer; */
 }
-.episodes-container{
+.episodes-container {
   height: 250px;
   overflow: auto;
 }
