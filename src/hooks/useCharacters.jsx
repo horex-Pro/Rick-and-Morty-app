@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 
 export default function useCharacters(query) {
   const [characters, setCharacters] = useState([]);
+  const [count, setCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -20,16 +21,18 @@ export default function useCharacters(query) {
         );
 
         setCharacters(data.results);
+        setCount(data.info.count);
       } catch (error) {
         // a cancelled request was replaced by a newer one — let that one own
         // the loading state, otherwise the UI flickers between keystrokes
         if (axios.isCancel(error)) return;
 
         setCharacters([]);
+        setCount(0);
         // the API answers 404 when nothing matches: that's an empty result,
         // not an error worth a toast
         if (error.response?.status !== 404) {
-          toast.error(error.response?.data?.error ?? "Something went wrong");
+          toast.error(error.response?.data?.error ?? "Couldn’t load characters. Check your connection and try again.");
         }
       }
       setIsLoading(false);
@@ -41,5 +44,5 @@ export default function useCharacters(query) {
     };
   }, [query]);
 
-  return { characters, isLoading };
+  return { characters, count, isLoading };
 }
